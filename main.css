@@ -1,0 +1,13 @@
+html {
+  box-sizing: border-box;
+}
+*, *::after, *::before {
+  box-sizing: inherit;
+}
+body {
+  padding: 20px;
+}
+div#numbers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
