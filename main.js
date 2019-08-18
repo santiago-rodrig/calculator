@@ -10,6 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let result = document.getElementById('result');
   let operate = document.getElementById('operate');
   let num, optr, multChar, divChar;
+  let clearBtn = document.getElementById('clear');
+  let deleteBtn = document.getElementById('delete');
+  clearBtn.disabled = true;
+  deleteBtn.disabled = true;
+  operate.disabled = true;
   const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   const operatorList = ['+', '-', '/', '*', '^'];
   digits.forEach(digit => {
@@ -48,8 +53,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check if the user-input display is empty
     if (userInput.innerHTML === "") {
       enableOperators();
+      enableDisplayManagers();
     } else if (result.innerHTML === 'ERROR') {
       enableOperators();
+      enableDisplayManagers();
+      result.innerHTML = '';
+    } else if (result.innerHTML !== '') {
+      userInput.innerHTML = result.innerHTML;
       result.innerHTML = '';
     }
     userInput.innerHTML += this.innerHTML;
@@ -86,10 +96,36 @@ document.addEventListener('DOMContentLoaded', () => {
     } while (fullOperation.length !== 1);
     result.innerHTML = fullOperation;
   });
+  clearBtn.addEventListener('click', e => {
+    e.preventDefault();
+    disableOperators();
+    result.innerHTML = '';
+    userInput.innerHTML = '';
+    disableDisplayManagers();
+  });
+  deleteBtn.addEventListener('click', e => {
+    e.preventDefault();
+    let newUserInput = userInput.innerHTML.split('');
+    newUserInput.pop();
+    newUserInput = newUserInput.join('');
+    userInput.innerHTML = newUserInput;
+    if (userInput.innerHTML === '') {
+      disableDisplayManagers();
+    }
+  });
+  function disableDisplayManagers() {
+    operate.disabled = true;
+    clearBtn.disabled = true;
+    deleteBtn.disabled = true;
+  }
+  function enableDisplayManagers() {
+    operate.disabled = false;
+    clearBtn.disabled = false;
+    deleteBtn.disabled = false;
+  }
   function validInput() {
     let operands = obtainOperands(userInput.innerHTML);
     let operations = obtainOperations(userInput.innerHTML);
-    console.log(operands, operations);
     if ((operands.length - 1) !== operations.length) {
       return false;
     }
