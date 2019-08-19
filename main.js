@@ -54,16 +54,24 @@ document.addEventListener('DOMContentLoaded', () => {
       enableOperators();
       enableDisplayManagers();
     }
-    if (result.innerHTML === 'ERROR') {
-      result.innerHTML = '';
-    } else if (
-        result.innerHTML !== 'ERROR' &&
-        result.innerHTML !== ''
-      ) {
-      userInput.innerHTML = result.innerHTML;
-      result.innerHTML = '';
-      enableDisplayManagers();
+    if (result.innerHTML !== '') {
+      if (result.innerHTML === 'ERROR') {
+        result.innerHTML = '';
+      } else {
+        switch (e.target.classList[0]) {
+          case 'number':
+            userInput.innerHTML = '';
+            result.innerHTML = '';
+            break;
+          case 'operator':
+            userInput.innerHTML = result.innerHTML;
+            result.innerHTML = '';
+            break;
+        }
+      }
     }
+    enableOperators();
+    enableDisplayManagers();
     userInput.innerHTML += this.innerHTML;
   }
   function enableOperators() {
@@ -104,6 +112,14 @@ document.addEventListener('DOMContentLoaded', () => {
     do {
       fullOperation = calculate(fullOperation);
     } while (fullOperation.length !== 1);
+    if (fullOperation.includes(NaN)) {
+      result.innerHTML = 'ERROR';
+      userInput.innerHTML = '';
+      e.target.disabled = true;
+      deleteBtn.disabled = true;
+      disableOperators();
+      return;
+    }
     result.innerHTML = fullOperation;
     e.target.disabled = true;
     deleteBtn.disabled = true;
@@ -123,6 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     userInput.innerHTML = newUserInput;
     if (userInput.innerHTML === '') {
       disableDisplayManagers();
+      disableOperators();
     }
   });
   function disableDisplayManagers() {
@@ -198,6 +215,11 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (division !== -1) {
       operandOne = operation[division - 1];
       operandTwo = operation[division + 1];
+      if (operandTwo === '0') {
+        result = NaN;
+        operation.splice(division - 1, 3, result);
+        return operation;
+      }
       result = giveItToMe(operandOne, operandTwo, divChar);
       operation.splice(division - 1, 3, result);
       return operation;
