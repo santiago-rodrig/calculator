@@ -50,17 +50,19 @@ document.addEventListener('DOMContentLoaded', () => {
   disableOperators();
   function insertToDisplay(e) {
     e.preventDefault();
-    // Check if the user-input display is empty
     if (userInput.innerHTML === "") {
       enableOperators();
       enableDisplayManagers();
-    } else if (result.innerHTML === 'ERROR') {
-      enableOperators();
-      enableDisplayManagers();
+    }
+    if (result.innerHTML === 'ERROR') {
       result.innerHTML = '';
-    } else if (result.innerHTML !== '') {
+    } else if (
+        result.innerHTML !== 'ERROR' &&
+        result.innerHTML !== ''
+      ) {
       userInput.innerHTML = result.innerHTML;
       result.innerHTML = '';
+      enableDisplayManagers();
     }
     userInput.innerHTML += this.innerHTML;
   }
@@ -75,15 +77,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
   operate.addEventListener('click', e => {
+    e.preventDefault();
     if (!validInput()) {
       result.innerHTML = 'ERROR';
       userInput.innerHTML = '';
       disableOperators();
+      e.target.disabled = true;
+      deleteBtn.disabled = true;
       return;
     }
-    e.preventDefault();
     let operands = obtainOperands(userInput.innerHTML);
     let operations = obtainOperations(userInput.innerHTML);
+    if (operations.length === 0) {
+      result.innerHTML = operands[0];
+      e.target.disabled = true;
+      deleteBtn.disabled = true;
+      return;
+    }
     let fullOperation = [];
     operands.forEach((value, index) => {
       fullOperation.push(value);
@@ -95,6 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
       fullOperation = calculate(fullOperation);
     } while (fullOperation.length !== 1);
     result.innerHTML = fullOperation;
+    e.target.disabled = true;
+    deleteBtn.disabled = true;
   });
   clearBtn.addEventListener('click', e => {
     e.preventDefault();
@@ -132,14 +144,36 @@ document.addEventListener('DOMContentLoaded', () => {
     return true;
   }
   function obtainOperands(inputFromUser) {
-    inputFromUser = inputFromUser.split(/\D/);
-    inputFromUser = inputFromUser.filter(foo => foo !== "");
-    return inputFromUser;
+    // 169440385390243.9×4 <-- test case, TODO
+    inputFromUser = inputFromUser.split('');
+    // should be ["1", "6", ..., ".", "9", "×", "4"]
+    let operatorStrings = ['+', '-', '^', multChar, divChar];
+    let result = [];
+    let tempArr = [];
+    inputFromUser.forEach((value, index) => {
+      if (operatorStrings.includes(value) && inputFromUser[index - 1] !== 'e') {
+        result.push(tempArr.join(''));
+        tempArr = [];
+      } else {
+        tempArr.push(value);
+        if (index === inputFromUser.length - 1) {
+          result.push(tempArr.join(''));
+        }
+      }
+    });
+    return result;
   }
   function obtainOperations(inputFromUser) {
-    inputFromUser = inputFromUser.split(/\d+/);
-    inputFromUser = inputFromUser.filter(foo => foo !== "");
-    return inputFromUser;
+    let a = inputFromUser.split('');
+    let b = [];
+    let f = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'e', '.'];
+    a.forEach((d, e) => {
+      if (f.includes(d) || a[e - 1] === 'e') {
+        return;
+      }
+      b.push(d);
+    });
+    return b;
   }
   function calculate(operation) {
     // Should receive something like ["23", "x", "6"]
