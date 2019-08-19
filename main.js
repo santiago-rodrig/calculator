@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let num, optr, multChar, divChar;
   let clearBtn = document.getElementById('clear');
   let deleteBtn = document.getElementById('delete');
+  let footer = document.querySelector('footer');
+  document.body.style.paddingBottom = footer.offsetHeight + 'px';
   clearBtn.disabled = true;
   deleteBtn.disabled = true;
   operate.disabled = true;

@@ -5,9 +5,69 @@ html {
   box-sizing: inherit;
 }
 body {
-  padding: 20px;
+  min-height: 100vh;
+  position: relative;
+  font-family: 'Blinker', sans-serif;
 }
 div#numbers {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+}
+header, footer {
+  background-color: #222;
+  color: #fff;
+  padding: 20px;
+}
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+h1 {
+  margin: 0;
+}
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+div#calculator {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 0.3;
+}
+div#display {
+  height: 100px;
+  background-color: #222;
+  color: #4ee810;
+  padding: 20px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+}
+div#result {
+  text-align: right;
+  padding-top: 7px;
+}
+div#user-input, div#result {
+  flex-basis: 48%;
+}
+div#user-input {
+  height: 33.3%;
+  padding-top: 7px;
+}
+div#da-line {
+  flex-basis: 4%;
+  background-color: #4ee810;
+  width: 100%;
+}
+a {
+  color: #4ee810;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
 }
