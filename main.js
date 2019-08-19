@@ -93,21 +93,45 @@ document.addEventListener('DOMContentLoaded', () => {
       operatorGroup[i].disabled = true;
     }
   }
-  operate.addEventListener('click', e => {
-    e.preventDefault();
+  operate.addEventListener('click', doTheOperation);
+  clearBtn.addEventListener('click', clearDisplay);
+  deleteBtn.addEventListener('click', deleteCharacter);
+  function clearDisplay() {
+    disableOperators();
+    result.innerHTML = '';
+    userInput.innerHTML = '';
+    disableDisplayManagers();
+  }
+  function deleteCharacter() {
+    let newUserInput = userInput.innerHTML.split('');
+    newUserInput.pop();
+    newUserInput = newUserInput.join('');
+    userInput.innerHTML = newUserInput;
+    if (userInput.innerHTML === '') {
+      disableDisplayManagers();
+      disableOperators();
+    }
+  }
+  function doTheOperation() {
     if (!validInput()) {
       result.innerHTML = 'ERROR';
       userInput.innerHTML = '';
       disableOperators();
-      e.target.disabled = true;
+      operate.disabled = true;
       deleteBtn.disabled = true;
       return;
     }
     let operands = obtainOperands(userInput.innerHTML);
     let operations = obtainOperations(userInput.innerHTML);
     if (operations.length === 0) {
+      if (operands[0] === '.') {
+        result.innerHTML = '0';
+        operate.disabled = true;
+        deleteBtn.disabled = true;
+        return
+      }
       result.innerHTML = operands[0];
-      e.target.disabled = true;
+      operate.disabled = true;
       deleteBtn.disabled = true;
       return;
     }
@@ -124,33 +148,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (fullOperation.includes(NaN)) {
       result.innerHTML = 'ERROR';
       userInput.innerHTML = '';
-      e.target.disabled = true;
+      operate.disabled = true;
       deleteBtn.disabled = true;
       disableOperators();
       return;
     }
     result.innerHTML = fullOperation;
-    e.target.disabled = true;
-    deleteBtn.disabled = true;
-  });
-  clearBtn.addEventListener('click', e => {
-    e.preventDefault();
-    disableOperators();
-    result.innerHTML = '';
-    userInput.innerHTML = '';
-    disableDisplayManagers();
-  });
-  deleteBtn.addEventListener('click', e => {
-    e.preventDefault();
-    let newUserInput = userInput.innerHTML.split('');
-    newUserInput.pop();
-    newUserInput = newUserInput.join('');
-    userInput.innerHTML = newUserInput;
-    if (userInput.innerHTML === '') {
-      disableDisplayManagers();
-      disableOperators();
+    if (allZeros(result.innerHTML)) {
+      result.innerHTML = parseInt(result.innerHTML).toString();
     }
-  });
+    operate.disabled = true;
+    deleteBtn.disabled = true;
+  }
   function disableDisplayManagers() {
     operate.disabled = true;
     clearBtn.disabled = true;
@@ -187,6 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     });
+    result = result.filter(a => a !== '');
     return result;
   }
   function obtainOperations(inputFromUser) {
@@ -266,4 +276,171 @@ document.addEventListener('DOMContentLoaded', () => {
         return (parseFloat(foo) + parseFloat(bar)).toFixed(3).toString();
     }
   }
+  function allZeros(str) {
+    if (str.includes('.')) {
+        str = str.split('.');
+        if (str[1] === '000') {
+          return true;
+        } else {
+          return false;
+        }
+    }
+    return true;
+  }
+  window.addEventListener('keydown', e => {
+
+    switch (e.keyCode) {
+      case 48:
+        if (result.innerHTML !== '') {
+          userInput.innerHTML = '';
+          result.innerHTML = '';
+        }
+        userInput.innerHTML += '0';
+        enableOperators();
+        enableDisplayManagers();
+        break;
+      case 49:
+        if (result.innerHTML !== '') {
+          userInput.innerHTML = '';
+          result.innerHTML = '';
+        }
+        userInput.innerHTML += '1';
+        enableOperators();
+        enableDisplayManagers();
+        break;
+      case 50:
+        if (result.innerHTML !== '') {
+          userInput.innerHTML = '';
+          result.innerHTML = '';
+        }
+        userInput.innerHTML += '2';
+        enableOperators();
+        enableDisplayManagers();
+        break;
+      case 51:
+        if (result.innerHTML !== '') {
+          userInput.innerHTML = '';
+          result.innerHTML = '';
+        }
+        userInput.innerHTML += '3';
+        enableOperators();
+        enableDisplayManagers();
+        break;
+      case 52:
+        if (result.innerHTML !== '') {
+          userInput.innerHTML = '';
+          result.innerHTML = '';
+        }
+        userInput.innerHTML += '4';
+        enableOperators();
+        enableDisplayManagers();
+        break;
+      case 53:
+        if (result.innerHTML !== '') {
+          userInput.innerHTML = '';
+          result.innerHTML = '';
+        }
+        userInput.innerHTML += '5';
+        enableOperators();
+        enableDisplayManagers();
+        break;
+      case 54:
+        if (result.innerHTML !== '') {
+          userInput.innerHTML = '';
+          result.innerHTML = '';
+        }
+        userInput.innerHTML += '6';
+        enableOperators();
+        enableDisplayManagers();
+        break;
+      case 55:
+        if (e.key === '/') {
+          e.preventDefault();
+
+
+          if (result.innerHTML !== '') {
+            userInput.innerHTML = result.innerHTML;
+            result.innerHTML = '';
+          }
+          userInput.innerHTML += divChar;
+        } else {
+          if (result.innerHTML !== '') {
+            userInput.innerHTML = '';
+            result.innerHTML = '';
+          }
+          userInput.innerHTML += '7';
+          enableOperators();
+          enableDisplayManagers();
+        }
+        break;
+      case 56:
+        if (result.innerHTML !== '') {
+          userInput.innerHTML = '';
+          result.innerHTML = '';
+        }
+        userInput.innerHTML += '8';
+        enableOperators();
+        enableDisplayManagers();
+        break;
+      case 57:
+        if (result.innerHTML !== '') {
+          userInput.innerHTML = '';
+          result.innerHTML = '';
+        }
+        userInput.innerHTML += '9';
+        enableOperators();
+        enableDisplayManagers();
+        break;
+      case 190:
+        if (result.innerHTML !== '') {
+          userInput.innerHTML = '';
+          result.innerHTML = '';
+        }
+        userInput.innerHTML += '.';
+        enableOperators();
+        enableDisplayManagers();
+        break;
+      case 88:
+        if (result.innerHTML !== '') {
+          userInput.innerHTML = result.innerHTML;
+          result.innerHTML = '';
+        }
+        userInput.innerHTML += multChar;
+        break;
+      case 0:
+        if (e.code === 'BracketLeft') {
+          if (result.innerHTML !== '') {
+            userInput.innerHTML = result.innerHTML;
+            result.innerHTML = '';
+          }
+          userInput.innerHTML += '^';
+        }
+        break;
+      case 171:
+      case 107:
+        if (result.innerHTML !== '') {
+          userInput.innerHTML = result.innerHTML;
+          result.innerHTML = '';
+        }
+        userInput.innerHTML += '+';
+        break;
+      case 109:
+      case 173:
+        if (result.innerHTML !== '') {
+          userInput.innerHTML = result.innerHTML;
+          result.innerHTML = '';
+        }
+        userInput.innerHTML += '-';
+        break;
+      case 13:
+        doTheOperation();
+        break;
+      case 8:
+        deleteCharacter();
+        break;
+      case 67:
+        clearDisplay();
+        break;
+    }
+  });
 });
