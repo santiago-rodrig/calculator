@@ -12,7 +12,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let num, optr, multChar, divChar;
   let clearBtn = document.getElementById('clear');
   let deleteBtn = document.getElementById('delete');
+  let header = document.querySelector('header');
   let footer = document.querySelector('footer');
+  let main = document.querySelector('main');
+  main.style.minHeight = (document.body.offsetHeight -
+    (header.offsetHeight + footer.offsetHeight)) + 'px';
   document.body.style.paddingBottom = footer.offsetHeight + 'px';
   clearBtn.disabled = true;
   deleteBtn.disabled = true;

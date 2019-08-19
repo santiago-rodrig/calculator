@@ -12,6 +12,7 @@ body {
 div#numbers {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
 }
 header, footer {
   background-color: #222;
@@ -31,13 +32,14 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 400px;
+  margin-top: 40px;
 }
 div#calculator {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-grow: 0.3;
+  width: 80%;
 }
 div#display {
   height: 100px;
@@ -70,4 +72,83 @@ a {
 }
 a:hover {
   text-decoration: underline;
+}
+div#operators button {
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  flex-basis: calc(20% - 2px);
+  height: 35px;
+  background-color: #1090e8;
+}
+div#operators button:hover {
+  cursor: pointer;
+}
+div#managers button {
+  background-color: #ee9c15;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  flex-basis: calc(33.3% - 2px);
+  height: 35px;
+}
+div#operators button[disabled] {
+  cursor: default;
+  opacity: 0.8;
+}
+button#clear {
+  width: 80px !important;
+}
+div#managers button {
+  cursor: pointer;
+}
+div#managers button[disabled] {
+  cursor: default;
+  opacity: 0.8;
+}
+div#managers {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+div#operators {
+  display: flex;
+  justify-content: space-between;
+}
+button {
+  background-color: #222;
+  padding: 5px;
+  border-radius: 8px;
+  color: #fff;
+  border: none;
+}
+button:hover {
+  color: #fff;
+  cursor: pointer;
+}
+@media only screen and (min-width: 768px) {
+  div#display {
+    font-size: 1.5em;
+    height: 120px;
+  }
+  div#numbers {
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 30px;
+  }
+  div#controllers {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+  }
+  div#operators {
+    display: flex;
+    justify-content: space-between;
+    flex-basis: 48%;
+  }
+  div#managers {
+    display: flex;
+    justify-content: space-between;
+    flex-basis: 48%;
+    margin: 0;
+  }
 }
