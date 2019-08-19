@@ -28,6 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
     num.innerHTML = digit.toString();
     numbers.append(num);
   });
+  num = number.cloneNode();
+  num.innerHTML = '.';
+  numbers.append(num);
   number.remove();
   operatorList.forEach(operation => {
     optr = operator.cloneNode();
@@ -252,15 +255,15 @@ document.addEventListener('DOMContentLoaded', () => {
   function giveItToMe(foo, bar, baz) {
     switch(baz) {
       case '^':
-        return (parseFloat(foo) ** parseFloat(bar)).toString();
+        return (parseFloat(foo) ** parseFloat(bar)).toFixed(3).toString();
       case divChar:
-        return (parseFloat(foo) / parseFloat(bar)).toString();
+        return (parseFloat(foo) / parseFloat(bar)).toFixed(3).toString();
       case multChar:
-        return (parseFloat(foo) * parseFloat(bar)).toString();
+        return (parseFloat(foo) * parseFloat(bar)).toFixed(3).toString();
       case '-':
-        return (parseFloat(foo) - parseFloat(bar)).toString();
+        return (parseFloat(foo) - parseFloat(bar)).toFixed(3).toString();
       case '+':
-        return (parseFloat(foo) + parseFloat(bar)).toString();
+        return (parseFloat(foo) + parseFloat(bar)).toFixed(3).toString();
     }
   }
 });
